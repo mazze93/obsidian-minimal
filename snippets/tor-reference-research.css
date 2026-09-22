@@ -1,0 +1,307 @@
+/* ==========================================================================
+   tor-reference-research — Obsidian CSS snippet
+   Layers over kepano/obsidian-minimal without touching upstream files.
+   Place this file in: <vault>/.obsidian/snippets/
+   Enable via: Settings → Appearance → CSS snippets
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. DESIGN TOKENS — project palette
+   Flexoki-inspired ink base with explicit semantic status colours.
+   -------------------------------------------------------------------------- */
+
+.theme-dark {
+  /* Base surfaces */
+  --trr-bg-primary:       #100f0f;   /* deepest ink */
+  --trr-bg-secondary:     #1c1b1a;   /* note surface */
+  --trr-bg-tertiary:      #282726;   /* sidebar, headers */
+  --trr-bg-hover:         #343230;   /* hover / selection */
+
+  /* Typography */
+  --trr-text-primary:     #cecdc3;   /* body */
+  --trr-text-secondary:   #878580;   /* metadata, labels */
+  --trr-text-faint:       #575653;   /* dividers, placeholders */
+
+  /* Verification state colours */
+  --trr-held:             #879a39;   /* green — claim verified */
+  --trr-corrected:        #d0a215;   /* amber — claim changed */
+  --trr-resourced:        #4385be;   /* blue — re-sourced */
+  --trr-rejected:         #d14d41;   /* red — claim failed */
+  --trr-blocked:          #8b7ec8;   /* purple — source unavailable */
+  --trr-unverified:       #878580;   /* grey — not yet checked */
+  --trr-in-progress:      #da702c;   /* orange — actively being verified */
+
+  /* Confidence gradients */
+  --trr-confidence-high:   var(--trr-held);
+  --trr-confidence-medium: var(--trr-corrected);
+  --trr-confidence-low:    var(--trr-rejected);
+
+  /* Structural accents */
+  --trr-border:           #282726;
+  --trr-border-strong:    #403e3c;
+  --trr-accent:           #4385be;
+  --trr-warning:          #d0a215;
+  --trr-danger:           #d14d41;
+}
+
+.theme-light {
+  --trr-bg-primary:       #fffcf0;
+  --trr-bg-secondary:     #f2f0e5;
+  --trr-bg-tertiary:      #e6e4d9;
+  --trr-bg-hover:         #dad8ce;
+  --trr-text-primary:     #100f0f;
+  --trr-text-secondary:   #6f6e69;
+  --trr-text-faint:       #b7b5ac;
+  --trr-held:             #66800b;
+  --trr-corrected:        #ad8301;
+  --trr-resourced:        #205ea6;
+  --trr-rejected:         #c03000;
+  --trr-blocked:          #5e409d;
+  --trr-unverified:       #6f6e69;
+  --trr-in-progress:      #bc5215;
+  --trr-confidence-high:   var(--trr-held);
+  --trr-confidence-medium: var(--trr-corrected);
+  --trr-confidence-low:    var(--trr-rejected);
+  --trr-border:           #dad8ce;
+  --trr-border-strong:    #b7b5ac;
+  --trr-accent:           #205ea6;
+  --trr-warning:          #ad8301;
+  --trr-danger:           #c03000;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. CALLOUT VARIANTS — stage-aware semantic blocks
+   -------------------------------------------------------------------------- */
+
+/* Verification verdict callouts */
+.callout[data-callout="held"] {
+  --callout-color: 135, 154, 57;       /* --trr-held */
+  --callout-icon: lucide-check-circle;
+}
+.callout[data-callout="corrected"] {
+  --callout-color: 208, 162, 21;       /* --trr-corrected */
+  --callout-icon: lucide-pencil;
+}
+.callout[data-callout="re-sourced"] {
+  --callout-color: 67, 133, 190;       /* --trr-resourced */
+  --callout-icon: lucide-refresh-cw;
+}
+.callout[data-callout="rejected"] {
+  --callout-color: 209, 77, 65;        /* --trr-rejected */
+  --callout-icon: lucide-x-circle;
+}
+.callout[data-callout="blocked"] {
+  --callout-color: 139, 126, 200;      /* --trr-blocked */
+  --callout-icon: lucide-lock;
+}
+.callout[data-callout="in-progress"] {
+  --callout-color: 218, 112, 44;       /* --trr-in-progress */
+  --callout-icon: lucide-loader;
+}
+
+/* MAESTRO layer callout */
+.callout[data-callout="maestro"] {
+  --callout-color: 67, 133, 190;
+  --callout-icon: lucide-layers;
+  border-left-width: 3px;
+}
+
+/* Adversarial review — the verifier's blind spot warning */
+.callout[data-callout="blind-spot"] {
+  --callout-color: 209, 77, 65;
+  --callout-icon: lucide-eye-off;
+  border-left-width: 3px;
+  font-style: italic;
+}
+
+/* Evidence ledger — inline confidence signal */
+.callout[data-callout="evidence"] {
+  --callout-color: 135, 154, 57;
+  --callout-icon: lucide-file-search;
+}
+
+/* Propagation / correction required */
+.callout[data-callout="propagate"] {
+  --callout-color: 208, 162, 21;
+  --callout-icon: lucide-git-branch;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. VERIFICATION STATUS BADGES — inline tag colours
+   Tag your notes with #held, #corrected, #rejected etc. for visual diff.
+   -------------------------------------------------------------------------- */
+
+.tag[href="#held"],
+.cm-hashtag-end:is([class*="held"]) {
+  background-color: color-mix(in srgb, var(--trr-held) 20%, transparent);
+  color: var(--trr-held);
+  border-color: var(--trr-held);
+}
+.tag[href="#corrected"],
+.cm-hashtag-end:is([class*="corrected"]) {
+  background-color: color-mix(in srgb, var(--trr-corrected) 20%, transparent);
+  color: var(--trr-corrected);
+  border-color: var(--trr-corrected);
+}
+.tag[href="#rejected"] {
+  background-color: color-mix(in srgb, var(--trr-rejected) 20%, transparent);
+  color: var(--trr-rejected);
+  border-color: var(--trr-rejected);
+}
+.tag[href="#blocked"] {
+  background-color: color-mix(in srgb, var(--trr-blocked) 20%, transparent);
+  color: var(--trr-blocked);
+  border-color: var(--trr-blocked);
+}
+.tag[href="#re-sourced"] {
+  background-color: color-mix(in srgb, var(--trr-resourced) 20%, transparent);
+  color: var(--trr-resourced);
+  border-color: var(--trr-resourced);
+}
+.tag[href="#in-progress"] {
+  background-color: color-mix(in srgb, var(--trr-in-progress) 20%, transparent);
+  color: var(--trr-in-progress);
+  border-color: var(--trr-in-progress);
+}
+.tag[href="#unverified"] {
+  background-color: color-mix(in srgb, var(--trr-unverified) 20%, transparent);
+  color: var(--trr-unverified);
+  border-color: var(--trr-unverified);
+}
+
+
+/* --------------------------------------------------------------------------
+   4. EVIDENCE TABLE TYPOGRAPHY
+   Tighter density for claim/evidence/verdict tables without losing legibility.
+   -------------------------------------------------------------------------- */
+
+.markdown-rendered table.evidence,
+.markdown-source-view table {
+  font-size: 0.85em;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.markdown-rendered table th {
+  background-color: var(--trr-bg-tertiary);
+  color: var(--trr-text-secondary);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 0.78em;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--trr-border-strong);
+}
+
+.markdown-rendered table td {
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--trr-border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.markdown-rendered table tr:hover td {
+  background-color: var(--trr-bg-hover);
+}
+
+/* Verdict column — rightmost cell gets a monospace badge look */
+.markdown-rendered table td:last-child {
+  font-family: var(--font-monospace);
+  font-size: 0.82em;
+  white-space: nowrap;
+}
+
+
+/* --------------------------------------------------------------------------
+   5. METADATA / FRONTMATTER DISPLAY
+   Make YAML properties legible as an at-a-glance status panel.
+   -------------------------------------------------------------------------- */
+
+.metadata-container {
+  background-color: var(--trr-bg-secondary);
+  border: 1px solid var(--trr-border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-bottom: 1.2em;
+  font-size: 0.83em;
+}
+
+.metadata-property-key {
+  color: var(--trr-text-secondary);
+  font-weight: 500;
+}
+
+.metadata-property-value {
+  color: var(--trr-text-primary);
+}
+
+
+/* --------------------------------------------------------------------------
+   6. STAGE HEADER ACCENTS
+   H1 colour varies by note stage via a data attribute on the body.
+   Set via Templater: document.body.setAttribute('data-stage', tp.frontmatter.stage)
+   or use the Style Settings plugin to toggle manually.
+   -------------------------------------------------------------------------- */
+
+body[data-stage="research"] .inline-title,
+body[data-stage="research"] h1 {
+  border-left: 3px solid var(--trr-in-progress);
+  padding-left: 0.5em;
+}
+body[data-stage="verification"] .inline-title,
+body[data-stage="verification"] h1 {
+  border-left: 3px solid var(--trr-corrected);
+  padding-left: 0.5em;
+}
+body[data-stage="maestro"] .inline-title,
+body[data-stage="maestro"] h1 {
+  border-left: 3px solid var(--trr-accent);
+  padding-left: 0.5em;
+}
+body[data-stage="incident"] .inline-title,
+body[data-stage="incident"] h1 {
+  border-left: 3px solid var(--trr-rejected);
+  padding-left: 0.5em;
+}
+body[data-stage="recommendations"] .inline-title,
+body[data-stage="recommendations"] h1 {
+  border-left: 3px solid var(--trr-held);
+  padding-left: 0.5em;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. CONFIDENCE & STATUS INLINE HIGHLIGHTS
+   Usage: wrap text in a <span class="trr-confidence-high"> or use the
+   Obsidian Highlightr / Contextual Typography plugin to apply via hotkey.
+   -------------------------------------------------------------------------- */
+
+.trr-held          { color: var(--trr-held); }
+.trr-corrected     { color: var(--trr-corrected); }
+.trr-rejected      { color: var(--trr-rejected); }
+.trr-blocked       { color: var(--trr-blocked); }
+.trr-resourced     { color: var(--trr-resourced); }
+.trr-unverified    { color: var(--trr-unverified); }
+.trr-in-progress   { color: var(--trr-in-progress); }
+
+.trr-confidence-high   { color: var(--trr-held); font-weight: 600; }
+.trr-confidence-medium { color: var(--trr-corrected); }
+.trr-confidence-low    { color: var(--trr-rejected); font-style: italic; }
+
+
+/* --------------------------------------------------------------------------
+   8. READING WIDTH — long-form research notes benefit from wider columns
+   Override Minimal's default readable line-length for evidence tables.
+   -------------------------------------------------------------------------- */
+
+.mod-root .view-content .markdown-preview-view.is-readable-line-width .markdown-preview-sizer {
+  max-width: 860px;
+}
+
+/* Full-width tables regardless of line width setting */
+.markdown-rendered table {
+  width: 100% !important;
+  max-width: none !important;
+}
